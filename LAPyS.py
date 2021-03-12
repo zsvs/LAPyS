@@ -5,15 +5,38 @@ import socket
 import re # Regex
 from ldap3 import Server, Connection, AUTO_BIND_NO_TLS, SUBTREE
 from ldap3.core.exceptions import LDAPBindError
+from ping3 import ping, verbose_ping
 
 LDAP_SEACRCH_BASE_DIR = "OU=Кластер Західний,OU=Агропідприємства,OU=Компютери,OU=Kernel Holding,DC=kernel,DC=local"
 STATE_FLAG = False
 #!AD_Computers = dict()
 
+SERVERS_POOL = {
+        "DC-KV-01" : "10.1.249.116",
+        "DC-KV-02" : "10.1.249.117",
+        "DC-HPI-01" : "10.1.249.118"
+        }
+
+def GetOptimalServer(ServersPool):
+    ServerDelayDict = dict()
+    PivotTime = 1.0
+    OptimalServerAddr = ""
+    for key in ServersPool.keys():
+        ServerDelayDict[key] = ping(ServersPool[key])
+        #! Added for debug info print(key," - ",ping(ServersPool[key]))
+        for DelayTime in ServerDelayDict.values():
+                if DelayTime <= PivotTime:
+                        PivotTime = DelayTime
+                        OptimalServerAddr = ServersPool[key]
+                        OptimalServerName = key
+    WriteToLog("Pinging server pool. Get {0} as main DC".format(OptimalServerName))
+    return OptimalServerAddr
+        
+
 def CheckNetwork():
     try:
         WriteToLog("Network test started")
-        hostname, domain = socket.gethostbyaddr("10.1.249.117")[0].partition('.')[::2]
+        hostname, domain = socket.gethostbyaddr(SERVERS_POOL["DC-KV-01"])[0].partition('.')[::2]
     except socket.herror:     
         WriteToLog("No connection to domain network")
         TextBoxDomainComputerRML.insert(0, "No connection to domain network")
@@ -40,12 +63,12 @@ def Decrypt(ByteList):
         st += chr(int(ASCII_Code))
     return st
 
-def get_ldap_info(UserName, PasswordLocal, ComName):
+def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
     if not UserName.startswith("sa"):
         WriteToLog("Not administrator entered!")
         return None
     try:
-        with Connection(Server("10.1.249.117", port=389, use_ssl=False), auto_bind=AUTO_BIND_NO_TLS, user="Kernel\\{0}".format(UserName), password=PasswordLocal) as c:
+        with Connection(Server(OptServer, port=389, use_ssl=False), auto_bind=AUTO_BIND_NO_TLS, user="Kernel\\{0}".format(UserName), password=PasswordLocal) as c:
             c.search(search_base=LDAP_SEACRCH_BASE_DIR, search_filter="(&(objectCategory=computer)(objectClass=computer)(cn={0}))".format(ComName), search_scope=SUBTREE, attributes=["name", "ms-Mcs-AdmPwd"], get_operational_attributes=True)
         return c.entries
     except LDAPBindError:
@@ -96,7 +119,10 @@ def Save(Event):
     TextBoxPasswordContext.configure(state="disabled")
 
 def GetPassword(Event):
+    global SERVERS_POOL
     Net = CheckNetwork()
+
+    OptimalServer = GetOptimalServer(SERVERS_POOL)
 
     if Net == socket.herror:
         return None
@@ -124,7 +150,7 @@ def GetPassword(Event):
     else:
         WriteToLog("Requested name -> {0}".format(RequestedNameLocal))
 
-    AD = get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal)
+    AD = get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal, OptimalServer)
     AD_Computers = dict()
     for obj in AD:
 	    AD_Computers[(str(obj.entry_attributes_as_dict["name"])[2:len(str(obj.entry_attributes_as_dict["name"]))-2])] = str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"])[2:len(str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"]))-2]
