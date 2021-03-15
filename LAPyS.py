@@ -95,6 +95,7 @@ def Load(Event):
     TextBoxUserContext.delete(0, "end")
     TextBoxPasswordContext.delete(0, "end")
     BtnSave.configure(state="disabled")
+    BtnLoad.configure(state="disabled")
     FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
     with open(FILE_PATH, "r") as Cred:
         DECODED_NAME = Cred.readlines(1)
