@@ -23,7 +23,7 @@ def GetOptimalServer(ServersPool):
     OptimalServerAddr = ""
     for key in ServersPool.keys():
         ServerDelayDict[key] = ping(ServersPool[key])
-        #! Added for debug info print(key," - ",ping(ServersPool[key]))
+        #! Add for debug info print(key," - ",ping(ServersPool[key]))
         for DelayTime in ServerDelayDict.values():
                 if DelayTime <= PivotTime:
                         PivotTime = DelayTime
