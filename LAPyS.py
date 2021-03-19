@@ -66,8 +66,8 @@ def Decrypt(ByteList):
         st += chr(int(ASCII_Code))
     return st
 
-def CheckUserCred(UserName, Password):
-    if len(UserName) == 0 and len(Password) == 0:
+def CheckUserCred_NotNullOrEmpty(UserName, Password):
+    if len(UserName) == 0 or len(Password) == 0 or UserName == None or Password == None:
         WriteToLog("Entry fields are empty")
         return False
     else: 
@@ -126,7 +126,7 @@ def Load(Event):
 
 def Save(Event):
     global STATE_FLAG
-    if CheckUserCred(TextBoxUserContext.get(), TextBoxPasswordContext.get()):
+    if CheckUserCred_NotNullOrEmpty(TextBoxUserContext.get(), TextBoxPasswordContext.get()):
         STATE_FLAG = True
         BtnLoad.configure(state="disabled")
         FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
@@ -143,51 +143,55 @@ def Save(Event):
 
 def GetPassword(Event):
     global SERVERS_POOL
-    Net = CheckNetwork()
+    if CheckUserCred_NotNullOrEmpty(TextBoxUserContext.get(), TextBoxPasswordContext.get()):
+        Net = CheckNetwork()
 
-    OptimalServer = GetOptimalServer(SERVERS_POOL)
+        OptimalServer = GetOptimalServer(SERVERS_POOL)
 
-    if Net == socket.herror:
-        return None
+        if Net == socket.herror:
+            return None
 
-    if STATE_FLAG:
-        WriteToLog("Uses credential from file")
-    else:
-        WriteToLog("Uses entry fields credentials")\
+        if STATE_FLAG:
+            WriteToLog("Uses credential from file")
+        else:
+            WriteToLog("Uses entry fields credentials")
             
 
-    TextBoxDomainComputerRML.delete(0, "end")
-    UserContextLocal = TextBoxUserContext.get()
-    PasswordContextLocal = TextBoxPasswordContext.get()
-    1
-    if not UserContextLocal.startswith("sa"):
-        TextBoxUserContext.delete(0, "end")
-        TextBoxPasswordContext.delete(0, "end")
-        TextBoxUserContext.insert(0, "{0} is not administrator!".format(UserContextLocal))
-        WriteToLog("{0} is not administrator!".format(UserContextLocal))
-        return None
+        TextBoxDomainComputerRML.delete(0, "end")
+        UserContextLocal = TextBoxUserContext.get()
+        PasswordContextLocal = TextBoxPasswordContext.get()
+        
+        if not UserContextLocal.startswith("sa"):
+            TextBoxUserContext.delete(0, "end")
+            TextBoxPasswordContext.delete(0, "end")
+            TextBoxUserContext.insert(0, "{0} is not administrator!".format(UserContextLocal))
+            WriteToLog("{0} is not administrator!".format(UserContextLocal))
+            return None
 
-    RequestedNameLocal = TextBoxDomainComputerName.get()
+        RequestedNameLocal = TextBoxDomainComputerName.get()
     
-    if len(RequestedNameLocal) == 0:
-        WriteToLog("Requested name is empty!")
-    else:
-        WriteToLog("Requested name -> {0}".format(RequestedNameLocal))
+        if len(RequestedNameLocal) == 0:
+            WriteToLog("Requested name is empty!")
+        else:
+            WriteToLog("Requested name -> {0}".format(RequestedNameLocal))
 
-    AD = get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal, OptimalServer)
-    AD_Computers = dict() #TODO Think about creates global dict to store all results for improving speed of searching.
-    for obj in AD:
-	    AD_Computers[(str(obj.entry_attributes_as_dict["name"])[2:len(str(obj.entry_attributes_as_dict["name"]))-2])] = str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"])[2:len(str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"]))-2]
+        AD = get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal, OptimalServer)
+        AD_Computers = dict() #TODO Think about creates global dict to store all results for improving speed of searching.
+        for obj in AD:
+	        AD_Computers[(str(obj.entry_attributes_as_dict["name"])[2:len(str(obj.entry_attributes_as_dict["name"]))-2])] = str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"])[2:len(str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"]))-2]
 
-    try:
-        TextBoxDomainComputerRML.insert(0, AD_Computers[RequestedNameLocal])
-    except KeyError:
-        TextBoxDomainComputerRML.insert(0, "No such name in OU")
-        WriteToLog("No such name in OU")
-        WriteToLog("Connection to LDAP server closed")
+        try:
+            TextBoxDomainComputerRML.insert(0, AD_Computers[RequestedNameLocal])
+        except KeyError:
+            TextBoxDomainComputerRML.insert(0, "No such name in OU")
+            WriteToLog("No such name in OU")
+            WriteToLog("Connection to LDAP server closed")
+        else:
+            WriteToLog("RML successfully returned")
+            WriteToLog("Connection to LDAP server closed")
     else:
-        WriteToLog("RML successfully returned")
-        WriteToLog("Connection to LDAP server closed")
+        TextBoxUserContext.insert(0,"Please enter your login and password")
+        TextBoxDomainComputerRML.insert(0,"Please enter your login and password")
 
 window.geometry('400x180')
 window.resizable(False, False)
