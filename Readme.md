@@ -8,6 +8,10 @@ Python MS LAPS implementation
 
 Так же, нужна версия Python 3.7 - 3.9.1
 
+Перед работой нужно обновить менеджер пакетов:
+
+pip install --upgrade pip
+
 Установка модулей:
 
 1) pip install ldap3
