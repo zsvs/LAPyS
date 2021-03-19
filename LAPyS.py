@@ -17,7 +17,11 @@ SERVERS_POOL = {
         "DC-HPI-01" : "10.1.249.118"
         }
 
-def GetOptimalServer(ServersPool):
+def GetOptimalServer(ServersPool): 
+    """
+        Get servers from dictionary(Server Name -> IPv4 Address). 
+        It will check delay time of all servers and return address of best one 
+    """
     ServerDelayDict = dict()
     PivotTime = 1.0
     OptimalServerAddr = ""
@@ -32,7 +36,6 @@ def GetOptimalServer(ServersPool):
     WriteToLog("Pinging server pool. Get {0} as main DC".format(OptimalServerName))
     return OptimalServerAddr
         
-
 def CheckNetwork():
     try:
         WriteToLog("Network test started")
@@ -63,13 +66,22 @@ def Decrypt(ByteList):
         st += chr(int(ASCII_Code))
     return st
 
-def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
+def get_ldap_info(UserName, PasswordLocal, ComName, OptServer): 
+    """
+        This function gets domain admins credential, computer name
+        and address of optimal LDAP server.
+        It will connect to Doman Controller by using domain admin credential.
+        When it successfully, then search requsted computer using LDAP request syntax.
+        If it can't connect check log file.
+        Returns list of LDAP attributes which contains ms-Msc-AdmPwd(local admin password)
+    """
     if not UserName.startswith("sa"):
         WriteToLog("Not administrator entered!")
         return None
     try:
         with Connection(Server(OptServer, port=389, use_ssl=False), auto_bind=AUTO_BIND_NO_TLS, user="Kernel\\{0}".format(UserName), password=PasswordLocal) as c:
             c.search(search_base=LDAP_SEACRCH_BASE_DIR, search_filter="(&(objectCategory=computer)(objectClass=computer)(cn={0}))".format(ComName), search_scope=SUBTREE, attributes=["name", "ms-Mcs-AdmPwd"], get_operational_attributes=True)
+            WriteToLog("LDAP credential successfully accepted")
         return c.entries
     except LDAPBindError:
         WriteToLog("Invalid LDAP credentials")
@@ -77,8 +89,6 @@ def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
         TextBoxPasswordContext.delete(0, "end")
         TextBoxUserContext.insert(0, "Invalid LDAP credentials")
         TextBoxPasswordContext.insert(0, "Invalid LDAP credentials")
-    else:
-        WriteToLog("LDAP credential successfully accepted")
         
 window = tk.Tk()
 
@@ -152,7 +162,7 @@ def GetPassword(Event):
         WriteToLog("Requested name -> {0}".format(RequestedNameLocal))
 
     AD = get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal, OptimalServer)
-    AD_Computers = dict()
+    AD_Computers = dict() #TODO Think about creates global dict to store all results for improving speed of searching.
     for obj in AD:
 	    AD_Computers[(str(obj.entry_attributes_as_dict["name"])[2:len(str(obj.entry_attributes_as_dict["name"]))-2])] = str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"])[2:len(str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"]))-2]
 
