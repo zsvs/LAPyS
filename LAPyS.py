@@ -66,6 +66,14 @@ def Decrypt(ByteList):
         st += chr(int(ASCII_Code))
     return st
 
+def CheckUserCred(UserName, Password):
+    if len(UserName) == 0 and len(Password) == 0:
+        WriteToLog("Entry fields are empty")
+        return False
+    else: 
+        return True
+    
+
 def get_ldap_info(UserName, PasswordLocal, ComName, OptServer): 
     """
         This function gets domain admins credential, computer name
@@ -118,16 +126,20 @@ def Load(Event):
 
 def Save(Event):
     global STATE_FLAG
-    STATE_FLAG = True
-    BtnLoad.configure(state="disabled")
-    FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
-    with open(FILE_PATH, "w") as Cred:
-        ENCODED_NAME = Encrypt(TextBoxUserContext.get())
-        ENCODED_PASSW = Encrypt(TextBoxPasswordContext.get())
-        Cred.write(str(ENCODED_NAME)[1:len(str(ENCODED_NAME))-1] + "\n" + str(ENCODED_PASSW)[1:len(str(ENCODED_PASSW))-1])
-        WriteToLog("Profile saved from entry fields -> {0}".format(STATE_FLAG))
-    TextBoxUserContext.configure(state="disabled")
-    TextBoxPasswordContext.configure(state="disabled")
+    if CheckUserCred(TextBoxUserContext.get(), TextBoxPasswordContext.get()):
+        STATE_FLAG = True
+        BtnLoad.configure(state="disabled")
+        FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
+        with open(FILE_PATH, "w") as Cred:
+            ENCODED_NAME = Encrypt(TextBoxUserContext.get())
+            ENCODED_PASSW = Encrypt(TextBoxPasswordContext.get())
+            Cred.write(str(ENCODED_NAME)[1:len(str(ENCODED_NAME))-1] + "\n" + str(ENCODED_PASSW)[1:len(str(ENCODED_PASSW))-1])
+            WriteToLog("Profile saved from entry fields -> {0}".format(STATE_FLAG))
+        TextBoxUserContext.configure(state="disabled")
+        TextBoxPasswordContext.configure(state="disabled")
+    else: 
+        WriteToLog("Operation Save failed. Empty user credential fields.")
+        TextBoxUserContext.insert(0,"Please enter your login and password")
 
 def GetPassword(Event):
     global SERVERS_POOL
@@ -141,12 +153,13 @@ def GetPassword(Event):
     if STATE_FLAG:
         WriteToLog("Uses credential from file")
     else:
-        WriteToLog("Uses entry fields credentials")
+        WriteToLog("Uses entry fields credentials")\
+            
 
     TextBoxDomainComputerRML.delete(0, "end")
     UserContextLocal = TextBoxUserContext.get()
     PasswordContextLocal = TextBoxPasswordContext.get()
-
+    1
     if not UserContextLocal.startswith("sa"):
         TextBoxUserContext.delete(0, "end")
         TextBoxPasswordContext.delete(0, "end")
