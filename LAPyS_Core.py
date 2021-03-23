@@ -1,12 +1,12 @@
 import os
-import Utils.Profile
-import UI.MainForm as Form
-import Network.Network_core as NetCore
-import Network.LDAP_Connect as ldap
-import Logging.LAPyS_Logging as Log
-import Network.Servers_pool as SRV
-import Utils.CheckUserCred as UserCred
-import Encryption.Encryption as Encr
+import LAPyS.Utils.Profile
+import LAPyS.UI.MainForm as Form
+import LAPyS.Network.Network_core as NetCore
+import LAPyS.Network.LDAP_Connect as ldap
+import LAPyS.Logging.LAPyS_Logging as Log
+import LAPyS.Network.Servers_pool as SRV
+import LAPyS.Utils.CheckUserCred as UserCred
+import LAPyS.Encryption.Encryption as Encr
 
 STATE_FLAG = False
 
