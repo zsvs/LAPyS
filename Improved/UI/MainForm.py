@@ -1,7 +1,7 @@
 import tkinter as tk
 #import LAPyS.LAPyS_Core as Events
 from LAPyS_Core import Save, Load, GetPassword
-import Logging.LAPyS_Logging as Log
+import LAPyS.Logging.LAPyS_Logging as Log
 
 window = tk.Tk()
 
