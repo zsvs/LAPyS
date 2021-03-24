@@ -2,7 +2,7 @@ from ldap3 import Server, Connection, AUTO_BIND_NO_TLS, SUBTREE
 from ldap3.core.exceptions import LDAPBindError
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Utils.CheckUserCred as Cred
-
+import LAPyS.UI.UI_LDAP_Error as ldap_error_message
 LDAP_SEACRCH_BASE_DIR = "OU=Кластер Західний,OU=Агропідприємства,OU=Компютери,OU=Kernel Holding,DC=kernel,DC=local"
 STATE_FLAG = False
 
@@ -25,7 +25,4 @@ def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
         return c.entries
     except LDAPBindError:
         Log.WriteToLog("Invalid LDAP credentials")
-        #!TextBoxUserContext.delete(0, "end")
-        #!TextBoxPasswordContext.delete(0, "end")
-        #!TextBoxUserContext.insert(0, "Invalid LDAP credentials")
-        #!TextBoxPasswordContext.insert(0, "Invalid LDAP credentials")
+        ldap_error_message.LdapError()

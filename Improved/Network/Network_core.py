@@ -2,7 +2,7 @@ import socket
 from ping3 import ping, verbose_ping
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Network.Servers_pool as SRV_POOL
-
+import LAPyS.UI.Network_Error as UI_NetError
 
 def GetOptimalServer(ServersPool):
     """
@@ -34,10 +34,9 @@ def CheckNetwork():
     try:
         Log.WriteToLog("Network test started")
         hostname, domain = socket.gethostbyaddr(SRV_POOL.SERVERS_POOL["DC-KV-01"])[0].partition('.')[::2]
-    except socket.herror:     
+    except socket.herror:   
         Log.WriteToLog("No connection to domain network")
-        #!TextBoxDomainComputerRML.insert(0, "No connection to domain network")
-        #print(socket.herror)
+        UI_NetError.NetError()  
         return socket.herror
     else:
         Log.WriteToLog("Successfully connected to {0}".format(hostname + "." + domain))
