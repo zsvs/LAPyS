@@ -3,7 +3,14 @@ from ping3 import ping, verbose_ping
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Network.Servers_pool as SRV_POOL
 import LAPyS.UI.Network_Error as UI_NetError
+"""
+Module provides work with network.
+Such as:
+1) pinging;
+2) create sockets;
+And allow to find optimal in delay time server.
 
+"""
 def GetOptimalServer(ServersPool):
     """
         Get servers from dictionary(Server Name -> IPv4 Address). 

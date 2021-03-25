@@ -1,3 +1,6 @@
+"""
+Module provides simple functions for encoding/decoding in ASCII table
+"""
 def Encrypt(String):
     lst = list()
     for symbol in String:

@@ -2,7 +2,9 @@ import tkinter as tk
 #import LAPyS.LAPyS_Core as Events
 from LAPyS.LAPyS_Core import Save, Load, GetPassword
 import LAPyS.Logging.LAPyS_Logging as Log
-
+"""
+Module for create GUI by using tkinter libs
+"""
 window = tk.Tk()
 
 window.geometry('400x180')

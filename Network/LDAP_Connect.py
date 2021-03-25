@@ -3,8 +3,11 @@ from ldap3.core.exceptions import LDAPBindError
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Utils.CheckUserCred as Cred
 import LAPyS.UI.UI_LDAP_Error as ldap_error_message
+"""
+Module used for provide work with LDAP.
+Using ldap3 lib.
+"""
 LDAP_SEACRCH_BASE_DIR = "OU=Кластер Західний,OU=Агропідприємства,OU=Компютери,OU=Kernel Holding,DC=kernel,DC=local"
-STATE_FLAG = False
 
 def get_ldap_info(UserName, PasswordLocal, ComName, OptServer): 
     """

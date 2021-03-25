@@ -1,5 +1,7 @@
 
-
+"""
+Module provides cheking user inputs
+"""
 def NotNullOrEmpty(UserName, Password):
     """
     If string is empty return FALSE
