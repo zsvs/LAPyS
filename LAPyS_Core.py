@@ -1,9 +1,9 @@
 import os
-import LAPyS.Utils.Profile
 import LAPyS.UI.MainForm as Form
+import LAPyS.Utils.Profile as Profile
+import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Network.Network_core as NetCore
 import LAPyS.Network.LDAP_Connect as ldap
-import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Network.Servers_pool as SRV
 import LAPyS.Utils.CheckUserCred as UserCred
 import LAPyS.Encryption.Encryption as Encr
@@ -17,8 +17,8 @@ def Load(Event):
     Form.TextBoxPasswordContext.delete(0, "end")
     Form.BtnSave.configure(state="disabled")
     Form.BtnLoad.configure(state="disabled")
-    FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
-    with open(FILE_PATH, "r") as Cred:
+    #FILE_PATH = #os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
+    with open(Profile.__CREDNTIALS_PATH, "r") as Cred:
         DECODED_NAME = Cred.readlines(1)
         DECODED_PASSW = Cred.readlines(1)
         Form.TextBoxUserContext.insert(0, Encr.Decrypt(DECODED_NAME[0].split(",")))
@@ -32,8 +32,8 @@ def Save(Event):
     if UserCred.NotNullOrEmpty(Form.TextBoxUserContext.get(), Form.TextBoxPasswordContext.get()) and UserCred.isAdministrator(Form.TextBoxUserContext.get()):
         STATE_FLAG = True
         Form.BtnLoad.configure(state="disabled")
-        FILE_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
-        with open(FILE_PATH, "w") as Cred:
+        #FILE_PATH = CREDNTIALS_PATH os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
+        with open(Profile.__CREDNTIALS_PATH, "w") as Cred:
             ENCODED_NAME = Encr.Encrypt(Form.TextBoxUserContext.get())
             ENCODED_PASSW = Encr.Encrypt(Form.TextBoxPasswordContext.get())
             Cred.write(str(ENCODED_NAME)[1:len(str(ENCODED_NAME))-1] + "\n" + str(ENCODED_PASSW)[1:len(str(ENCODED_PASSW))-1])
