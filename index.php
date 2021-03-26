@@ -1,10 +1,15 @@
 <?php
-require_once ("classes/DBCreate.php");
-require_once ("classes/FillTable.php");
-require_once ("classes/ValueTable.php");
+require_once 'Kernel-LAPyS/Back-end Classes/FirstClass.php';
 
-$get = new ValueTable('svs');
-$set = new FillTable('svs');
 
-$set->insert();
-$get->getTableValue();
+// Function to print out objects / arrays
+function PrintObj ($o) { echo "<pre>"; print_r($o); echo "</pre>"; }
+
+// Load the POST.
+$data = file_get_contents("php://input");
+
+// ...and decode it into a PHP array.
+$data = json_decode($data);
+
+// Do whatever with the array.
+PrintObj($data);
