@@ -68,6 +68,7 @@ class DBCreate
             `id` INT NOT NULL AUTO_INCREMENT ,
             `login` VARCHAR(50) NOT NULL ,
             `password` VARCHAR(600) NOT NULL ,
+            `RequestedName` VARCHAR(20) NOT NULL,
             `IP_Address` int UNSIGNED NOT NULL ,
             `data_create` TIMESTAMP NOT NULL ,
             `data_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE = InnoDB DEFAULT CHARSET=utf8;");
