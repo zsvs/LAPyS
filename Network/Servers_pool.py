@@ -1,6 +1,0 @@
-#TODO Rewrite this module to simple JSON file
-SERVERS_POOL = {
-        "DC-KV-01" : "10.1.249.116",
-        "DC-KV-02" : "10.1.249.117",
-        "DC-HPI-01" : "10.1.249.118"
-        }
