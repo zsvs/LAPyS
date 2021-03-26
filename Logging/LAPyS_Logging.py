@@ -3,7 +3,7 @@ import datetime
 """
 Provides logging for LAPyS project.
 """
-__LOG_DIR_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log"
+__LOG_DIR_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log" #Save path to Logs directory
 
 def WriteToLog(Text):
     """
