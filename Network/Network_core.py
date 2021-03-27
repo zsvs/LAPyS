@@ -1,15 +1,15 @@
 import socket
 from ping3 import ping, verbose_ping
 import LAPyS.Logging.LAPyS_Logging as Log
-import LAPyS.Network.Servers_pool as SRV_POOL
 import LAPyS.UI.Network_Error as UI_NetError
+import LAPyS.JSON_Classes.Marshaling as Marsh
+import LAPyS.Utils.Profile as Profile
 """
 Module provides work with network.
 Such as:
 1) pinging;
 2) create sockets;
 And allow to find optimal in delay time server.
-
 """
 def GetOptimalServer(ServersPool):
     """
@@ -39,8 +39,11 @@ def GetOptimalServer(ServersPool):
         
 def CheckNetwork():
     try:
+        JSON = Marsh.Marshaling().GetInstance()
+        SRV = JSON.Deserialize(Profile.__APP_PATH +  "\\SERVERS_POOL.json")
+
         Log.WriteToLog("Network test started")
-        hostname, domain = socket.gethostbyaddr(SRV_POOL.SERVERS_POOL["DC-KV-01"])[0].partition('.')[::2]
+        hostname, domain = socket.gethostbyaddr(SRV["DC-KV-01"])[0].partition('.')[::2]
     except socket.herror:   
         Log.WriteToLog("No connection to domain network")
         UI_NetError.NetError()  
