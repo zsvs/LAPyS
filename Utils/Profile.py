@@ -4,13 +4,14 @@ import LAPyS.Logging.LAPyS_Logging as Log
 This module uses for create and check if profile is exist
 CREDNTIALS_PATH contains the full path to credentials file
 """
-__CREDNTIALS_PATH = os.getenv("USERPROFILE") + "\\LAPyS Log\\Credential.cred"
+__CREDNTIALS_PATH = os.getenv("USERPROFILE") + "\\LAPyS\\Credential.cred"
+__APP_PATH = os.getenv("USERPROFILE") + "\\LAPyS"
 
 try:
     try:
         Log.WriteToLog("Start checking profile directory")
     except FileNotFoundError:
-        os.mkdir(os.getenv("USERPROFILE") + "\\LAPyS Log")
+        os.mkdir(os.getenv("USERPROFILE") + "\\LAPyS")
         Log.WriteToLog("Profile directory created")
     else:
         Log.WriteToLog("Profile directory already exists")
