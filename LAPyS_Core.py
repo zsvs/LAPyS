@@ -4,9 +4,9 @@ import LAPyS.Utils.Profile as Profile
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.Network.Network_core as NetCore
 import LAPyS.Network.LDAP_Connect as ldap
-import LAPyS.Network.Servers_pool as SRV
 import LAPyS.Utils.CheckUserCred as UserCred
 import LAPyS.Encryption.Encryption as Encr
+import LAPyS.JSON_Classes.Marshaling as Marsh
 
 STATE_FLAG = False
 
@@ -50,8 +50,9 @@ def GetPassword(Event):
        
         if Net == NetCore.socket.herror:
             return None
-
-        OptimalServer = NetCore.GetOptimalServer(SRV.SERVERS_POOL)
+        JSON = Marsh.Marshaling().GetInstance()
+        SRV = JSON.Deserialize(Profile.__APP_PATH +  "\\SERVERS_POOL.json")
+        OptimalServer = NetCore.GetOptimalServer(SRV)
 
         if STATE_FLAG:
             Log.WriteToLog("Uses credential from file")
