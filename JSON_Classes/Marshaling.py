@@ -2,8 +2,8 @@ import json
 """
 Module provide mechanism to marshaling data to/from json
 """
-class Marshaling: # Singleton class, that provide marhaling of information and storage of deserialization history 
-
+class Marshaling: # Singleton class, that provide marhaling of information and storage of deserialization history
+                  # There can be only one instance
     __Instance = None # Stores instance of class
     __History = set() # Saves paths to files that were used for deserialization
 
