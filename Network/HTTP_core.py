@@ -18,9 +18,9 @@ Headers = {"Content-type": "application/json",
            "Content-Encoding": "utf-8"}
            #"Content-Length" : str(len(Payload))}
 
-URL = "http://93.76.47.112:65065/Kernel-LAPyS/index.php"
+URL = "https://sd.kernel.ua/plugins/servlet/theme/portal/2"
 #URLTEST = "http://192.168.1.41:65065/some/post"
-Answer = requests.post(URL, data = Payload , headers = Headers)
+Answer = requests.post(URL, data = "0" , headers = Headers)
 
 print(Answer)
 print(Answer.headers)
