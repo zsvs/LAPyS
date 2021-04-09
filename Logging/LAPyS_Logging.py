@@ -11,9 +11,8 @@ class Logger:
     __FILE_PATH = __LOG_DIR_PATH + "\\Logs.log" # Save path to Log file
 
     def __init__(self):
-        if not Logger.__Instance:
-            self.GetInstance()
-            #print("Instance already created", self.GetInstance())
+        if Logger.__Instance:
+            print("Instance already created", self.GetInstance())
     
     @classmethod
     def GetInstance(cls):
