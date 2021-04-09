@@ -3,11 +3,14 @@ import tkinter as tk
 from LAPyS.LAPyS_Core import Save, Load, GetPassword
 import LAPyS.Logging.LAPyS_Logging as Log
 """
-Module for create GUI by using tkinter libs
+Module for create GUI by using tkinter libs.
+Implements functions for block and clear for TextBoxes
 """
+Logs = Log.Logger().GetInstance() # Create instance of logger
+
 window = tk.Tk()
 
-window.geometry('400x180')
+window.geometry("400x180")
 window.resizable(False, False)
 window.title("LAPyS")
 
@@ -45,7 +48,22 @@ BtnPassw = tk.Button(window, text="Get password", width=10, height=2, bg="white"
 BtnPassw.bind("<Button-1>", GetPassword)
 BtnPassw.place(x = 10, y = 105, width = 80, height = 20)
 
+def OnSavePressed():
+    BtnLoad.configure(state="disabled")
+    TextBoxUserContext.configure(state="disabled")
+    TextBoxPasswordContext.configure(state="disabled")
+    
+def OnLoadPressed():
+    TextBoxUserContext.delete(0, "end")
+    TextBoxPasswordContext.delete(0, "end")
+    BtnSave.configure(state="disabled")
+    BtnLoad.configure(state="disabled")
+    TextBoxUserContext.configure(state="disabled")
+    TextBoxPasswordContext.configure(state="disabled")
+    
 window.mainloop()
 
 if window.mainloop() == None:
-    Log.WriteToLog("Application killed!")
+    Logs.WriteToLog("Application killed!")
+
+
