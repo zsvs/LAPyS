@@ -3,7 +3,7 @@ from ping3 import ping, verbose_ping
 import LAPyS.Logging.LAPyS_Logging as Log
 import LAPyS.UI.Network_Error as UI_NetError
 import LAPyS.JSON_Classes.Marshaling as Marsh
-import LAPyS.Utils.Profile as Profile
+from LAPyS.Utils.Profile import Profile
 """
 Module provides work with network.
 Such as:
@@ -11,6 +11,8 @@ Such as:
 2) create sockets;
 And allow to find optimal in delay time server.
 """
+Logs = Log.Logger().GetInstance() # Create instance of logger
+
 def GetOptimalServer(ServersPool):
     """
         Get servers from dictionary(Server Name -> IPv4 Address). 
@@ -30,23 +32,23 @@ def GetOptimalServer(ServersPool):
                             OptimalServerAddr = ServersPool[key]
                             OptimalServerName = key
                 except TypeError:
-                    Log.WriteToLog("No ICMP answer from servers")
-                    Log.WriteToLog("Function return default server {0}".format(DefServerAddr))
+                    Logs.WriteToLog("No ICMP answer from servers")
+                    Logs.WriteToLog("Function return default server {0}".format(DefServerAddr))
                     return DefServerAddr
                 else:
-                    Log.WriteToLog("Pinging server pool. Get {0} as main DC".format(OptimalServerName))
+                    Logs.WriteToLog("Pinging server pool. Get {0} as main DC".format(OptimalServerName))
                     return OptimalServerAddr
         
 def CheckNetwork():
     try:
         JSON = Marsh.Marshaling().GetInstance()
-        SRV = JSON.Deserialize(Profile.__APP_PATH +  "\\SERVERS_POOL.json")
+        SRV = JSON.Deserialize(Profile.GetProfilePath() +  "\\SERVERS_POOL.json")
 
-        Log.WriteToLog("Network test started")
+        Logs.WriteToLog("Network test started")
         hostname, domain = socket.gethostbyaddr(SRV["DC-KV-01"])[0].partition('.')[::2]
     except socket.herror:   
-        Log.WriteToLog("No connection to domain network")
+        Logs.WriteToLog("No connection to domain network")
         UI_NetError.NetError()  
         return socket.herror
     else:
-        Log.WriteToLog("Successfully connected to {0}".format(hostname + "." + domain))
+        Logs.WriteToLog("Successfully connected to {0}".format(hostname + "." + domain))
