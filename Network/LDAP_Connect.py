@@ -8,6 +8,7 @@ Module used for provide work with LDAP.
 Using ldap3 lib.
 """
 LDAP_SEACRCH_BASE_DIR = "OU=Кластер Західний,OU=Агропідприємства,OU=Компютери,OU=Kernel Holding,DC=kernel,DC=local"
+Logs = Log.Logger().GetInstance()
 
 def get_ldap_info(UserName, PasswordLocal, ComName, OptServer): 
     """
@@ -19,13 +20,13 @@ def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
         Returns list of LDAP attributes which contains ms-Msc-AdmPwd(local admin password)
     """
     if not Cred.isAdministrator(UserName):
-        Log.WriteToLog("Not administrator entered!")
+        Logs.WriteToLog("Not administrator entered!")
         return None
     try:
         with Connection(Server(OptServer, port=389, use_ssl=False), auto_bind=AUTO_BIND_NO_TLS, user="Kernel\\{0}".format(UserName), password=PasswordLocal) as c:
             c.search(search_base=LDAP_SEACRCH_BASE_DIR, search_filter="(&(objectCategory=computer)(objectClass=computer)(cn={0}))".format(ComName), search_scope=SUBTREE, attributes=["name", "ms-Mcs-AdmPwd"], get_operational_attributes=True)
-            Log.WriteToLog("LDAP credential successfully accepted")
+            Logs.WriteToLog("LDAP credential successfully accepted")
         return c.entries
     except LDAPBindError:
-        Log.WriteToLog("Invalid LDAP credentials")
+        Logs.WriteToLog("Invalid LDAP credentials")
         ldap_error_message.LdapError()
