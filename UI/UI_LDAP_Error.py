@@ -1,4 +1,3 @@
-
 from tkinter import messagebox as mb
 """
 Show messagebox with error to user
