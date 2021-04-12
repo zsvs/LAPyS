@@ -5,7 +5,7 @@ def Encrypt(String):
     lst = list()
     for symbol in String:
         lst.append(ord(symbol))
-    return lst
+    return str(lst)[1:len(str(lst))-1]
 
 def Decrypt(ByteList):
     st = str()
