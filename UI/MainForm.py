@@ -1,12 +1,12 @@
 import tkinter as tk
 #import LAPyS.LAPyS_Core as Events
 from LAPyS.LAPyS_Core import Save, Load, GetPassword
-import LAPyS.Logging.LAPyS_Logging as Log
+from LAPyS.Logging.LAPyS_Logging import Logs
+
 """
 Module for create GUI by using tkinter libs.
 Implements functions for block and clear for TextBoxes
 """
-Logs = Log.Logger().GetInstance() # Create instance of logger
 
 window = tk.Tk()
 
@@ -48,19 +48,10 @@ BtnPassw = tk.Button(window, text="Get password", width=10, height=2, bg="white"
 BtnPassw.bind("<Button-1>", GetPassword)
 BtnPassw.place(x = 10, y = 105, width = 80, height = 20)
 
-def OnSavePressed():
-    BtnLoad.configure(state="disabled")
-    TextBoxUserContext.configure(state="disabled")
-    TextBoxPasswordContext.configure(state="disabled")
-    
-def OnLoadPressed():
+def onLoad_ClearFields():
     TextBoxUserContext.delete(0, "end")
-    TextBoxPasswordContext.delete(0, "end")
-    BtnSave.configure(state="disabled")
-    BtnLoad.configure(state="disabled")
-    TextBoxUserContext.configure(state="disabled")
-    TextBoxPasswordContext.configure(state="disabled")
-    
+    TextBoxPasswordContext.delete(0, "end")    
+
 window.mainloop()
 
 if window.mainloop() == None:
