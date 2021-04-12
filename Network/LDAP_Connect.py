@@ -1,14 +1,13 @@
 from ldap3 import Server, Connection, AUTO_BIND_NO_TLS, SUBTREE
 from ldap3.core.exceptions import LDAPBindError
-import LAPyS.Logging.LAPyS_Logging as Log
-import LAPyS.Utils.CheckUserCred as Cred
+from LAPyS.Logging.LAPyS_Logging import Logs
+import LAPyS.Utils.UserClass as UserClass
 import LAPyS.UI.UI_LDAP_Error as ldap_error_message
 """
 Module used for provide work with LDAP.
 Using ldap3 lib.
 """
 LDAP_SEACRCH_BASE_DIR = "OU=Кластер Західний,OU=Агропідприємства,OU=Компютери,OU=Kernel Holding,DC=kernel,DC=local"
-Logs = Log.Logger().GetInstance()
 
 def get_ldap_info(UserName, PasswordLocal, ComName, OptServer): 
     """
@@ -19,7 +18,7 @@ def get_ldap_info(UserName, PasswordLocal, ComName, OptServer):
         If it can't connect check log file.
         Returns list of LDAP attributes which contains ms-Msc-AdmPwd(local admin password)
     """
-    if not Cred.isAdministrator(UserName):
+    if not UserClass.User.isAdministrator(UserName):
         Logs.WriteToLog("Not administrator entered!")
         return None
     try:
