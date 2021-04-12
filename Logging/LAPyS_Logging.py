@@ -38,3 +38,5 @@ class Logger:
         with open(self.__FILE_PATH, "a") as LogFile:
             LogFile.write(str(TIME) + ": " + Text + "\n")
 
+Logs = Logger().GetInstance() # Create an instance of logger
+
