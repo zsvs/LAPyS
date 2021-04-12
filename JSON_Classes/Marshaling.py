@@ -28,6 +28,4 @@ class Marshaling: # Singleton class, that provide marhaling of information and s
         with open(JSON_Path, "r") as JSON_File:
             return json.load(JSON_File)
 
-#Data = Serializator().GetInstance()
-#obj = Data.Deserialize("C:\\Users\\stepa\\Documents\\Repositories\\Python\\WindowBased\\Network\\SERVERS_POOL.json")
-#print(obj["DC-KV-01"])
+JSON = Marshaling().GetInstance()
