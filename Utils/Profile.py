@@ -1,19 +1,21 @@
+"""
+This module uses for work with application profile 
+"""
 import os
 from LAPyS.Logging.LAPyS_Logging import Logs
-"""
-This module uses for create and check if profile is exist
-CREDNTIALS_PATH contains the full path to credentials file
-"""
 
-class AplicationProfile:
+class AplicationProfile: #TODO Rewrite to singleton
     __CREDNTIALS_PATH = os.getenv("USERPROFILE") + "\\LAPyS\\Credential.cred"
     __APP_PATH = os.getenv("USERPROFILE") + "\\LAPyS"
-
+    __Instance = None
     def __init__(self):
         """
-        ctor check if exist profile dir 
+        ctor. Check if exist profile dir 
         and credentials file. If not then create them.
         """
+        if AplicationProfile.__Instance:
+            print("Profile instance already existsH", self.GetInstance())
+
         if not self.CheckProfileDirectoryExist():
             self.__CreateProfileDirectory()
         else:
@@ -23,6 +25,15 @@ class AplicationProfile:
             self.__CreateCredentialFile()
         else:
             Logs.WriteToLog("Credential file is exist")
+    
+    @classmethod
+    def GetInstance(cls):
+        """
+        Creates an unique instance of AplicationProfile class
+        """
+        if cls.__Instance == None:
+            cls.__Instance = AplicationProfile()
+        return cls.__Instance 
 
     def __CreateProfileDirectory(self):
         """
@@ -63,5 +74,5 @@ class AplicationProfile:
         """
         return self.__APP_PATH
 
-Profile = AplicationProfile()
+Profile = AplicationProfile().GetInstance() # Create an instance of ApplicationProfile
 
