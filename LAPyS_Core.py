@@ -20,7 +20,7 @@ def Load(Event):
     STATE_FLAG = True
     Form.onLoad_ClearFields()
     with open(Profile.GetCredentialPath(), "r") as Cred:
-        User_OnLoad = UserClass.User(ObjectName = "onLoad", Name = Encr.Decrypt((Cred.readlines(1))[0].split(",")), Password = Encr.Decrypt((Cred.readlines(1))[0].split(",")) )
+        User_OnLoad = UserClass.User(ObjectName = "onLoad", Name = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")), Password = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")) )
         Form.TextBoxUserContext.insert(0, User_OnLoad.GetName())
         Form.TextBoxPasswordContext.insert(0, User_OnLoad.GetPassword())
         Logs.WriteToLog("Profile loaded from file Credential.cred -> {0}".format(STATE_FLAG))
@@ -29,22 +29,21 @@ def Save(Event):
     global STATE_FLAG, User_OnSave
     if UserClass.User.NotNullOrEmpty(Form.TextBoxUserContext.get(), Form.TextBoxPasswordContext.get()) and UserClass.User.isAdministrator(Form.TextBoxUserContext.get()):
         STATE_FLAG = True
+        User_OnSave = UserClass.User(ObjectName = "onSave", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
         with open(Profile.GetCredentialPath(), "w") as Cred:
-            User_OnSave = UserClass.User(ObjectName = "onSave", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
-            Cred.write(str(Encr.Encrypt(Form.TextBoxUserContext.get())) + "\n" + str(Encr.Encrypt(Form.TextBoxPasswordContext.get())))
+            Cred.write(str(Encr.Coder.Encrypt(Form.TextBoxUserContext.get())) + "\n" + str(Encr.Coder.Encrypt(Form.TextBoxPasswordContext.get())))
             Logs.WriteToLog("Profile saved from entry fields -> {0}".format(STATE_FLAG))
     else: 
         Logs.WriteToLog("Operation Save failed. Empty user credential fields.")
         Form.TextBoxUserContext.insert(0,"Please enter your login and password")
-
+        
 def GetPassword(Event):
     if UserClass.User.NotNullOrEmpty(Form.TextBoxUserContext.get(), Form.TextBoxPasswordContext.get()):
         Net = NetCore.CheckNetwork()
        
         if Net == NetCore.socket.herror:
             return None
-        SRV = JSON.Deserialize(Profile.GetProfilePath() +  "\\SERVERS_POOL.json")
-        OptimalServer = NetCore.GetOptimalServer(SRV)
+        OptimalServer = NetCore.GetOptimalServer(JSON.Deserialize(Profile.GetProfilePath() +  "\\SERVERS_POOL.json"))
 
         if STATE_FLAG:
             Logs.WriteToLog("Uses credential from file")
