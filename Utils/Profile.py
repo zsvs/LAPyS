@@ -4,10 +4,11 @@ This module uses for work with application profile
 import os
 from LAPyS.Logging.LAPyS_Logging import Logs
 
-class AplicationProfile: #TODO Rewrite to singleton
+class AplicationProfile: 
     __CREDNTIALS_PATH = os.getenv("USERPROFILE") + "\\LAPyS\\Credential.cred"
     __APP_PATH = os.getenv("USERPROFILE") + "\\LAPyS"
     __Instance = None
+    
     def __init__(self):
         """
         ctor. Check if exist profile dir 
