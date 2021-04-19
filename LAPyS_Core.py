@@ -9,27 +9,26 @@ from LAPyS.JSON_Classes.Marshaling import JSON
 from LAPyS.UI.UserCreation_Error import Creation_Error
 import LAPyS.Utils.UserClass as UserClass
 
-User_OnLoad = None
-User_OnSave = None
+User_OnFile = None
 User_FromEntry = None
 
 STATE_FLAG = False
 
 def Load(Event):
-    global STATE_FLAG, User_OnLoad
+    global STATE_FLAG, User_OnFile
     STATE_FLAG = True
     Form.onLoad_ClearFields()
     with open(Profile.GetCredentialPath(), "r") as Cred:
-        User_OnLoad = UserClass.User(ObjectName = "onLoad", Name = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")), Password = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")) )
-        Form.TextBoxUserContext.insert(0, User_OnLoad.GetName())
-        Form.TextBoxPasswordContext.insert(0, User_OnLoad.GetPassword())
+        User_OnFile = UserClass.User(ObjectName = "onLoad", Name = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")), Password = Encr.Coder.Decrypt((Cred.readlines(1))[0].split(",")) )
+        Form.TextBoxUserContext.insert(0, User_OnFile.GetName())
+        Form.TextBoxPasswordContext.insert(0, User_OnFile.GetPassword())
         Logs.WriteToLog("Profile loaded from file Credential.cred -> {0}".format(STATE_FLAG))
 
 def Save(Event):
-    global STATE_FLAG, User_OnSave
+    global STATE_FLAG, User_OnFile
     if UserClass.User.NotNullOrEmpty(Form.TextBoxUserContext.get(), Form.TextBoxPasswordContext.get()) and UserClass.User.isAdministrator(Form.TextBoxUserContext.get()):
         STATE_FLAG = True
-        User_OnSave = UserClass.User(ObjectName = "onSave", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
+        User_OnFile = UserClass.User(ObjectName = "onSave", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
         with open(Profile.GetCredentialPath(), "w") as Cred:
             Cred.write(str(Encr.Coder.Encrypt(Form.TextBoxUserContext.get())) + "\n" + str(Encr.Coder.Encrypt(Form.TextBoxPasswordContext.get())))
             Logs.WriteToLog("Profile saved from entry fields -> {0}".format(STATE_FLAG))
@@ -47,17 +46,20 @@ def GetPassword(Event):
 
         if STATE_FLAG:
             Logs.WriteToLog("Uses credential from file")
+            UserContextLocal = User_OnFile.GetName()
+            PasswordContextLocal = User_OnFile.GetPassword() 
         else:
             Logs.WriteToLog("Uses entry fields credentials")
             try:
                 User_FromEntry = UserClass.User(ObjectName = "FromEntryFields", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
+                UserContextLocal = User_FromEntry.GetName()
+                PasswordContextLocal = User_FromEntry.GetPassword() 
             except Exception:
                 Creation_Error(Form.TextBoxUserContext.get())
                 return None
 
         Form.TextBoxDomainComputerRML.delete(0, "end")
-        UserContextLocal = User_FromEntry.GetName()
-        PasswordContextLocal = User_FromEntry.GetPassword() 
+
 
         RequestedNameLocal = Form.TextBoxDomainComputerName.get()
 
