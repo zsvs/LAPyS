@@ -1,8 +1,9 @@
+"""
+Module provides class that create users for LAPyS App
+"""
+
 from LAPyS.Logging.LAPyS_Logging import Logs
 
-"""
-Module provides cheking user inputs
-"""
 class User:
     ObjectName = "Deffault"
     __Name = None
