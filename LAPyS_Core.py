@@ -7,10 +7,13 @@ from LAPyS.Utils.Profile import Profile
 from LAPyS.Logging.LAPyS_Logging import Logs
 from LAPyS.JSON_Classes.Marshaling import JSON
 from LAPyS.UI.UserCreation_Error import Creation_Error
+from LAPyS.Network.HTTP_core import WebClient
+import LAPyS.JSON_Classes.DataTemplate as DataTemplate
 import LAPyS.Utils.UserClass as UserClass
 
 User_OnFile = None
 User_FromEntry = None
+DataToPost = None
 
 STATE_FLAG = False
 
@@ -47,21 +50,22 @@ def GetPassword(Event):
         if STATE_FLAG:
             Logs.WriteToLog("Uses credential from file")
             UserContextLocal = User_OnFile.GetName()
-            PasswordContextLocal = User_OnFile.GetPassword() 
+            PasswordContextLocal = User_OnFile.GetPassword()
+            RequestedNameLocal = Form.TextBoxDomainComputerName.get()
+            DataToPost = DataTemplate.ExchangeData(UserContextLocal, PasswordContextLocal, RequestedNameLocal)
         else:
             Logs.WriteToLog("Uses entry fields credentials")
             try:
                 User_FromEntry = UserClass.User(ObjectName = "FromEntryFields", Name = Form.TextBoxUserContext.get(), Password = Form.TextBoxPasswordContext.get())
                 UserContextLocal = User_FromEntry.GetName()
-                PasswordContextLocal = User_FromEntry.GetPassword() 
+                PasswordContextLocal = User_FromEntry.GetPassword()
+                RequestedNameLocal = Form.TextBoxDomainComputerName.get()
+                DataToPost = DataTemplate.ExchangeData(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
             except Exception:
                 Creation_Error(Form.TextBoxUserContext.get())
                 return None
 
-        Form.TextBoxDomainComputerRML.delete(0, "end")
-
-
-        RequestedNameLocal = Form.TextBoxDomainComputerName.get()
+        Form.TextBoxDomainComputerRML.delete(0, "end")     
 
         if len(RequestedNameLocal) == 0:
             Logs.WriteToLog("Requested name is empty!")
@@ -82,6 +86,8 @@ def GetPassword(Event):
         else:
             Logs.WriteToLog("RML successfully returned")
             Logs.WriteToLog("Connection to LDAP server closed")
+        WebClient.SetPayload(DataToPost.GetDataToExchange()) # Sets payload for Post request
+        WebClient.PostRequest() # Sending POST to web-server
     else:
         Form.TextBoxUserContext.insert(0,"Please enter your login and password")
         Form.TextBoxDomainComputerRML.insert(0,"Please enter your login and password")
