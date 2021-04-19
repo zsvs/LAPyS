@@ -4,7 +4,6 @@ Implements functions for block and clear for TextBoxes
 """
 
 import tkinter as tk
-#import LAPyS.LAPyS_Core as Events
 from LAPyS.LAPyS_Core import Save, Load, GetPassword
 from LAPyS.Logging.LAPyS_Logging import Logs
 
