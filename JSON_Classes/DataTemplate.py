@@ -4,7 +4,7 @@ data which must be posted to web-server
 """
 from datetime import datetime as dt
 
-class ExchangeData:
+class DataForm:
     __DataTemplate = None
 
     def __init__(self, UserName, Password, RequestedName):
