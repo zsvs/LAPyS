@@ -4,14 +4,28 @@ Implements functions for block and clear for TextBoxes
 """
 
 import tkinter as tk
+import os
 from LAPyS.LAPyS_Core import Save, Load, GetPassword
 from LAPyS.Logging.LAPyS_Logging import Logs
+from LAPyS.Utils.Profile import Profile
+from LAPyS.UI.AddIP_Form import Ip_Add_Form
 
 window = tk.Tk()
 
 window.geometry("400x220")
 window.resizable(False, False)
 window.title("LAPyS")
+
+mainMenu = tk.Menu(window)
+
+fileMenu = tk.Menu(mainMenu, tearoff=0)
+fileMenu.add_command(label = "Add ip to pool", command = Ip_Add_Form)
+fileMenu.add_command(label = "View server pool", command = lambda: os.system(Profile.GetProfilePath() +  "\\SERVERS_POOL.json"))
+fileMenu.add_command(label = "Open logs", command = lambda: os.system(Logs.GetLogFilePath()))
+
+aboutMenu = tk.Menu(mainMenu, tearoff=0)
+aboutMenu.add_command(label = "Help")
+aboutMenu.add_command(label = "About")
 
 labelUserLogin = tk.Label(text="Enter your domain login:")
 labelUserLogin.place(x = 100, y = 25, width = 250, height = 15)
@@ -51,6 +65,9 @@ def onLoad_ClearFields():
     TextBoxUserContext.delete(0, "end")
     TextBoxPasswordContext.delete(0, "end")    
 
+mainMenu.add_cascade(label = "File", menu=fileMenu)
+mainMenu.add_cascade(label = "About", menu=aboutMenu)
+window.config(menu=mainMenu)
 window.mainloop()
 
 if window.mainloop() == None:
