@@ -52,7 +52,7 @@ def GetPassword(Event):
             UserContextLocal = User_OnFile.GetName()
             PasswordContextLocal = User_OnFile.GetPassword()
             RequestedNameLocal = Form.TextBoxDomainComputerName.get()
-            DataToPost = DataTemplate.ExchangeData(UserContextLocal, PasswordContextLocal, RequestedNameLocal)
+            DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal)
         else:
             Logs.WriteToLog("Uses entry fields credentials")
             try:
@@ -60,7 +60,7 @@ def GetPassword(Event):
                 UserContextLocal = User_FromEntry.GetName()
                 PasswordContextLocal = User_FromEntry.GetPassword()
                 RequestedNameLocal = Form.TextBoxDomainComputerName.get()
-                DataToPost = DataTemplate.ExchangeData(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
+                DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
             except Exception:
                 Creation_Error(Form.TextBoxUserContext.get())
                 return None
