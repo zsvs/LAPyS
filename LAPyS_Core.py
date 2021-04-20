@@ -52,7 +52,6 @@ def GetPassword(Event):
             UserContextLocal = User_OnFile.GetName()
             PasswordContextLocal = User_OnFile.GetPassword()
             RequestedNameLocal = Form.TextBoxDomainComputerName.get()
-            DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal)
         else:
             Logs.WriteToLog("Uses entry fields credentials")
             try:
@@ -60,13 +59,12 @@ def GetPassword(Event):
                 UserContextLocal = User_FromEntry.GetName()
                 PasswordContextLocal = User_FromEntry.GetPassword()
                 RequestedNameLocal = Form.TextBoxDomainComputerName.get()
-                DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
             except Exception:
                 Creation_Error(Form.TextBoxUserContext.get())
                 return None
 
         Form.TextBoxDomainComputerRML.delete(0, "end")     
-
+        DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
         if len(RequestedNameLocal) == 0:
             Logs.WriteToLog("Requested name is empty!")
         else:
