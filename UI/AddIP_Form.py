@@ -1,4 +1,6 @@
-
+"""
+Additional form for user servers input
+"""
 import tkinter as tk
 from LAPyS.Logging.LAPyS_Logging import Logs
 from LAPyS.Utils.Profile import Profile
