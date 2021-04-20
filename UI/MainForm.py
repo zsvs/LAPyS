@@ -24,7 +24,6 @@ fileMenu.add_command(label = "View server pool", command = lambda: os.system(Pro
 fileMenu.add_command(label = "Open logs", command = lambda: os.system(Logs.GetLogFilePath()))
 
 aboutMenu = tk.Menu(mainMenu, tearoff=0)
-aboutMenu.add_command(label = "Help")
 aboutMenu.add_command(label = "About")
 
 labelUserLogin = tk.Label(text="Enter your domain login:")
