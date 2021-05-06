@@ -30,6 +30,7 @@ class AddIpForm:
     def GetInstance(cls):
         if cls.__Instance == None:
             cls.__Instance = AddIpForm()
+        return cls.__Instance
 
     def AddWindowParams(self, WindowGeometry, WindowResizable, WindowTitle):
         self.__AddIpWindow.geometry(WindowGeometry)
@@ -66,3 +67,4 @@ class AddIpForm:
         self.AddButton(self.__AddIpWindow, "Add", 10, 2, self.AddServer, 10, 90, 130, 20)
         self.__AddIpWindow.mainloop()
 
+print("Hello", AddIpForm.GetInstance().Initialize())
