@@ -2,7 +2,7 @@
 This module uses for work with application profile 
 """
 import os
-from LAPyS.Logging.LAPyS_Logging import Logs
+from Logging.LAPyS_Logging import Logs
 
 class AplicationProfile: 
     __CREDNTIALS_PATH = os.getenv("USERPROFILE") + "\\LAPyS\\Credential.cred"

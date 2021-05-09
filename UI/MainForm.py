@@ -5,10 +5,10 @@ Implements functions for block and clear for TextBoxes
 
 import tkinter as tk
 import os
-from LAPyS.LAPyS_Core import Save, Load, GetPassword
-from LAPyS.Logging.LAPyS_Logging import Logs
-from LAPyS.Utils.Profile import Profile
-from LAPyS.UI.AddIP_Form import AddIpForm
+from LAPyS_Core import Save, Load, GetPassword
+from Logging.LAPyS_Logging import Logs
+from Utils.Profile import Profile
+from UI.AddIP_Form import AddIpForm
 
 window = tk.Tk()
 

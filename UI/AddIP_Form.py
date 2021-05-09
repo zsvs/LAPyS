@@ -2,9 +2,9 @@
 Additional form for user servers input
 """
 import tkinter as tk
-from LAPyS.Logging.LAPyS_Logging import Logs
-from LAPyS.Utils.Profile import Profile
-from LAPyS.JSON_Classes.Marshaling import JSON
+from Logging.LAPyS_Logging import Logs
+from Utils.Profile import Profile
+from JSON_Classes.Marshaling import JSON
 import os
 
 class AddIpForm:
@@ -67,4 +67,4 @@ class AddIpForm:
         self.AddButton(self.__AddIpWindow, "Add", 10, 2, self.AddServer, 10, 90, 130, 20)
         self.__AddIpWindow.mainloop()
 
-print("Hello", AddIpForm.GetInstance().Initialize())
+#! print("Hello", AddIpForm.GetInstance().Initialize())
