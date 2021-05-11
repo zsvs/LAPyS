@@ -2,6 +2,8 @@
 Basic class for building forms
 """
 import tkinter as tk
+#import sys
+#sys.path.append("C:\\Users\\stepa\\Documents\\Repositories\\LAPyS")
 from Logging.LAPyS_Logging import Logs
 from Utils.Profile import Profile
 from JSON_Classes.Marshaling import JSON
