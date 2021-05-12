@@ -1,8 +1,8 @@
 from ldap3 import Server, Connection, AUTO_BIND_NO_TLS, SUBTREE
 from ldap3.core.exceptions import LDAPBindError
-from Logging.LAPyS_Logging import Logs
-import Utils.UserClass as UserClass
-import UI.UI_LDAP_Error as ldap_error_message
+from LAPyS.Logging.LAPyS_Logging import Logs
+import LAPyS.Utils.UserClass as UserClass
+import LAPyS.UI.UI_LDAP_Error as ldap_error_message
 """
 Module used for provide work with LDAP.
 Using ldap3 lib.

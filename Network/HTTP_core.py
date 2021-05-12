@@ -3,8 +3,8 @@ Class to work with web-server
 """
 
 import requests
-from JSON_Classes.Marshaling import JSON # Get instance of Marshaling class
-from Logging.LAPyS_Logging import Logs # Get instance of Logger class
+from LAPyS.JSON_Classes.Marshaling import JSON # Get instance of Marshaling class
+from LAPyS.Logging.LAPyS_Logging import Logs # Get instance of Logger class
 
 class HTTPClient:
     __Payload = None

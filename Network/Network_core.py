@@ -1,9 +1,9 @@
 import socket
 from ping3 import ping, verbose_ping
-from Logging.LAPyS_Logging import Logs
-import UI.Network_Error as UI_NetError
-from JSON_Classes.Marshaling import JSON
-from Utils.Profile import Profile
+from LAPyS.Logging.LAPyS_Logging import Logs
+import LAPyS.UI.Network_Error as UI_NetError
+from LAPyS.JSON_Classes.Marshaling import JSON
+from LAPyS.Utils.Profile import Profile
 """
 Module provides work with network.
 Such as:
