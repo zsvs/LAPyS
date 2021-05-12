@@ -2,7 +2,7 @@
 Module provides class that create users for LAPyS App
 """
 
-from Logging.LAPyS_Logging import Logs
+from LAPyS.Logging.LAPyS_Logging import Logs
 
 class User:
     ObjectName = "Deffault"
