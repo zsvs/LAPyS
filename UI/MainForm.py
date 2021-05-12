@@ -5,10 +5,10 @@ Implements functions for block and clear for TextBoxes
 
 import tkinter as tk
 import os
-from LAPyS_Core import Save, Load, GetPassword
-from Logging.LAPyS_Logging import Logs
-from Utils.Profile import Profile
-from UI.AddIP_Form import AddIpForm
+from LAPyS.LAPyS_Core import Save, Load, GetPassword
+from LAPyS.Logging.LAPyS_Logging import Logs
+from LAPyS.Utils.Profile import Profile
+from LAPyS.UI.AddIP_Form import AddIpForm
 
 window = tk.Tk()
 
@@ -19,7 +19,7 @@ window.title("LAPyS")
 mainMenu = tk.Menu(window)
 
 fileMenu = tk.Menu(mainMenu, tearoff=0)
-fileMenu.add_command(label = "Add ip to pool", command = lambda: AddIpForm().GetInstance().Initialize())
+fileMenu.add_command(label = "Add ip to pool", command = lambda: AddIpForm.GetInstance("Add_IP").Initialize())
 fileMenu.add_command(label = "View server pool", command = lambda: os.system(Profile.GetProfilePath() +  "\\SERVERS_POOL.json"))
 fileMenu.add_command(label = "Open logs", command = lambda: os.system(Logs.GetLogFilePath()))
 
