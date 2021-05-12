@@ -2,20 +2,20 @@
 Additional form for user servers input
 """
 import tkinter as tk
-from Logging.LAPyS_Logging import Logs
-from Utils.Profile import Profile
-from JSON_Classes.Marshaling import JSON
+from LAPyS.Logging.LAPyS_Logging import Logs
+from LAPyS.Utils.Profile import Profile
+from LAPyS.JSON_Classes.Marshaling import JSON
+from LAPyS.UI.Form_Class import FormBuilder
 import os
 
-class AddIpForm:
+class AddIpForm(FormBuilder):
     __Instance = None
     __EntryFieldsTextVariablesDict = dict()
 
-    def __init__(self):
+    def __init__(self, Name):
+        super().__init__(Name)
         if AddIpForm.__Instance:
-            print("Instance already created", self.GetInstance())
-        else:
-            print("No instance")
+            print("Instance already created", self.GetInstance(Name))
 
     def AddServer(self, Event):
         Pool = JSON.Deserialize(Profile.GetProfilePath() +  "\\SERVERS_POOL.json")
@@ -27,9 +27,9 @@ class AddIpForm:
         self.__ClearEntry("ServerIP")
     
     @classmethod
-    def GetInstance(cls):
+    def GetInstance(cls, Name):
         if cls.__Instance == None:
-            cls.__Instance = AddIpForm()
+            cls.__Instance = AddIpForm(Name)
         return cls.__Instance
 
     def AddWindowParams(self, WindowGeometry, WindowResizable, WindowTitle):
