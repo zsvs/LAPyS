@@ -1,15 +1,15 @@
 import os
-import UI.MainForm as Form
-import Network.Network_core as NetCore
-import Network.LDAP_Connect as ldap
-import Encryption.Encryption as Encr
-from Utils.Profile import Profile
-from Logging.LAPyS_Logging import Logs
-from JSON_Classes.Marshaling import JSON
-from UI.UserCreation_Error import Creation_Error
-from Network.HTTP_core import WebClient
-import JSON_Classes.DataTemplate as DataTemplate
-import Utils.UserClass as UserClass
+import LAPyS.UI.MainForm as Form
+import LAPyS.Network.Network_core as NetCore
+import LAPyS.Network.LDAP_Connect as ldap
+import LAPyS.Encryption.Encryption as Encr
+from LAPyS.Utils.Profile import Profile
+from LAPyS.Logging.LAPyS_Logging import Logs
+from LAPyS.JSON_Classes.Marshaling import JSON
+from LAPyS.UI.UserCreation_Error import Creation_Error
+from LAPyS.Network.HTTP_core import WebClient
+import LAPyS.JSON_Classes.DataTemplate as DataTemplate
+import LAPyS.Utils.UserClass as UserClass
 
 User_OnFile = None
 User_FromEntry = None
