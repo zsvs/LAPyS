@@ -1,9 +1,3 @@
-import socket
-from ping3 import ping, verbose_ping
-from LAPyS.Logging.LAPyS_Logging import Logs
-import LAPyS.UI.Network_Error as UI_NetError
-from LAPyS.JSON_Classes.Marshaling import JSON
-from LAPyS.Utils.Profile import Profile
 """
 Module provides work with network.
 Such as:
@@ -11,6 +5,12 @@ Such as:
 2) create sockets;
 And allow to find optimal in delay time server.
 """
+import socket
+from ping3 import ping, verbose_ping
+from LAPyS.Logging.LAPyS_Logging import Logs
+import LAPyS.UI.Network_Error as UI_NetError
+from LAPyS.JSON_Classes.Marshaling import JSON
+from LAPyS.Utils.Profile import Profile
 
 def GetOptimalServer(ServersPool):
     """
