@@ -17,8 +17,8 @@ from LAPyS.JSON_Classes.Marshaling import JSON
 from LAPyS.UI.UserCreation_Error import Creation_Error
 import LAPyS.Network.LDAP_Connect as ldap
 
-MainUserFactory = Factory.UserFactory("UserFactory")
-UsersHashArray = dict()
+MainUserFactory = Factory.UserFactory("UserFactory") # Factory for users creation
+UsersHashArray = dict() # Associative array for users. 
 DataToPost = None
 
 class MainWindow(FormBuilder):
@@ -49,7 +49,6 @@ class MainWindow(FormBuilder):
             Logs.WriteToLog("Operation Save failed. Empty user credential fields.")
             self.SetEntryText("EntryUser", "Please enter your login and password")
             
-
     def GetPassword(self, Event):
         if UserClass.User.NotNullOrEmpty(self.GetEntryText("EntryUser"), self.GetEntryText("EntryPassword")):
             Net = NetCore.CheckNetwork()
@@ -100,7 +99,6 @@ class MainWindow(FormBuilder):
             #WebClient.PostRequest() # Sending POST to web-server
         else:
             self.SetEntryText("EntryUser", "Please enter your login and password")
-
 
     def Initialize(self):
         self.__MainWindow = tk.Tk()
