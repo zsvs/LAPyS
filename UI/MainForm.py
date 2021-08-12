@@ -74,7 +74,6 @@ class MainWindow(FormBuilder):
                     return None
             
             self.SetEntryText("EntryDomainComputerRML", "")   
-            #TODO Add module for work with custom http server
             #DataToPost = DataTemplate.DataForm(UserContextLocal, PasswordContextLocal, RequestedNameLocal) 
             if len(RequestedNameLocal) == 0:
                 Logs.WriteToLog("Requested name is empty!")
@@ -82,7 +81,7 @@ class MainWindow(FormBuilder):
                 Logs.WriteToLog("Requested name -> {0}".format(RequestedNameLocal))
 
             AD = ldap.get_ldap_info(UserContextLocal, PasswordContextLocal, RequestedNameLocal, OptimalServer)
-            AD_Computers = dict() #TODO Think about creates global dict to store all results for improving speed of searching.
+            AD_Computers = dict() 
             for obj in AD:
                 AD_Computers[(str(obj.entry_attributes_as_dict["name"])[2:len(str(obj.entry_attributes_as_dict["name"]))-2])] = str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"])[2:len(str(obj.entry_attributes_as_dict["ms-Mcs-AdmPwd"]))-2]
 
@@ -125,5 +124,4 @@ class MainWindow(FormBuilder):
         self.mainMenu.add_cascade(label = "File", menu = self.GetSubMenu("File")) 
         self.__MainWindow.config(menu=self.mainMenu)
         self.__MainWindow.mainloop()
-
 MainWindow("Main").Initialize()

@@ -43,7 +43,7 @@ class FormBuilder:
         Add entry field to window.
         """
         self.__EntryFieldsTextVariablesDict[TextVariableName] = tk.StringVar()
-        self.EntryBox = tk.Entry(Master, textvariable  = self.__EntryFieldsTextVariablesDict[TextVariableName])
+        self.EntryBox = tk.Entry(Master, textvariable = self.__EntryFieldsTextVariablesDict[TextVariableName])
         self.EntryBox["show"] = ShowParams
         self.EntryBox.place(x = lx, y = ly, width = Width, height = Height)
 

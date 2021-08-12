@@ -10,8 +10,7 @@ import os
 
 class AddIpForm(FormBuilder):
     __Instance = None
-    __EntryFieldsTextVariablesDict = dict()
-
+ 
     def __init__(self, Name):
         super().__init__(Name)
         if AddIpForm.__Instance:
@@ -41,5 +40,3 @@ class AddIpForm(FormBuilder):
         self.AddWindowEntry(self.__Window, 10, 65, 130, 20, "ServerIP", None)
         self.AddButton(self.__Window, "Add", 10, 2, self.AddServer, 10, 90, 130, 20)
         self.__Window.mainloop()
-
-#! print("Hello", AddIpForm.GetInstance().Initialize())
